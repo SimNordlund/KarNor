@@ -1,0 +1,8 @@
+POST http://localhost:8080/save
+Content-Type: application/json
+
+{
+  "fileName": "example.pdf",
+  "data": "SGVsbG8gd29ybGQh",
+  "uploadTime": "2024-09-17T12:34:56"
+}
