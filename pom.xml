@@ -1,17 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project
-        xmlns="http://maven.apache.org/POM/4.0.0"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="
-        http://maven.apache.org/POM/4.0.0
-        https://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="
+         http://maven.apache.org/POM/4.0.0
+         https://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>3.1.3</version> <!-- Updated to the latest stable version -->
+        <version>3.1.3</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
@@ -23,7 +22,7 @@
 
     <properties>
         <java.version>17</java.version>
-        <kotlin.version>1.9.10</kotlin.version> <!-- Use the latest compatible Kotlin version -->
+        <kotlin.version>1.9.10</kotlin.version>
     </properties>
 
     <dependencies>
@@ -31,20 +30,21 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.3.3</version>
         </dependency>
 
         <!-- Spring Boot Starter Data JPA -->
-    <!--    <dependency>
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
-        </dependency> -->
+        </dependency>
 
-        <!-- PostgreSQL Driver -->
-        <!--    <dependency>
-               <groupId>org.postgresql</groupId>
-               <artifactId>postgresql</artifactId>
-               <scope>runtime</scope>
-           </dependency> -->
+        <!-- H2 Database Dependency (Added here for development) -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope> <!-- H2 will only be used during runtime -->
+        </dependency>
 
         <!-- Jackson Module Kotlin -->
         <dependency>
@@ -74,15 +74,16 @@
 
         <!-- Spring Boot Starter GraphQL -->
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-graphql</artifactId>
+            <groupId>org.webjars.npm</groupId>
+            <artifactId>graphql</artifactId>
+            <version>15.8.0</version>
         </dependency>
 
         <!-- Spring Boot Starter Test -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
+            <version>3.3.3</version>
         </dependency>
 
         <!-- Kotlin Test JUnit5 -->
@@ -92,23 +93,18 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring WebFlux (For Reactive Support, Optional) -->
-
+        <!-- Spring WebFlux (Optional) -->
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-webflux</artifactId>
+            <version>6.1.13</version>
         </dependency>
 
         <!-- Spring GraphQL Test -->
         <dependency>
             <groupId>org.springframework.graphql</groupId>
             <artifactId>spring-graphql-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>jakarta.persistence</groupId>
-            <artifactId>jakarta.persistence-api</artifactId>
-            <version>3.1.0</version>
+            <version>1.3.2</version>
         </dependency>
     </dependencies>
 
@@ -120,11 +116,6 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <excludes>
-                        <!-- Exclude Lombok (Not needed in Kotlin) -->
-                    </excludes>
-                </configuration>
             </plugin>
 
             <!-- Kotlin Maven Plugin -->
