@@ -8,8 +8,6 @@ import java.time.LocalDateTime
 @SpringBootApplication
 open class KarNorApplication {
     init {
-        val doc = Pdf(10, "Hello", ByteArray(10), LocalDateTime.now())
-        println(doc)
     }
 }
 

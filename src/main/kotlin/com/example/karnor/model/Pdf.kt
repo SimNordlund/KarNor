@@ -3,24 +3,21 @@ package com.example.karnor.model
 import jakarta.persistence.*
 import java.time.LocalDateTime
 
-//LOMBOK FUNGERAR EJ MED KOTLIN KOD???
 @Entity
-class Pdf() {
+class Pdf(
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //Tar man auto så kan hibernate dampa med nummer.
-    var id: Long? = null
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
 
-    var fileName: String? = null
+    var fileName: String?,
 
     @Lob
-    var data: ByteArray? = null
+    var data: ByteArray?,
 
     var uploadTime: LocalDateTime = LocalDateTime.now()
+)
 
-    constructor(id: Long?, fileName: String?, data: ByteArray?, uploadTime: LocalDateTime) : this() {
-        this.id = id
-        this.fileName = fileName
-        this.data = data
-        this.uploadTime = uploadTime
-    }
+{
+    // För JPA XDD
+    constructor() : this(null, null, null, LocalDateTime.now())
 }
