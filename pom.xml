@@ -93,13 +93,6 @@
             <scope>test</scope>
         </dependency>
 
-        <!-- Spring WebFlux (Optional) -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webflux</artifactId>
-            <version>6.1.13</version>
-        </dependency>
-
         <!-- Spring GraphQL Test -->
         <dependency>
             <groupId>org.springframework.graphql</groupId>
