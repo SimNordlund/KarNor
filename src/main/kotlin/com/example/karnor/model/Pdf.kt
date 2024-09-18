@@ -13,11 +13,9 @@ class Pdf(
 
     @Lob
     var data: ByteArray?,
-
-    var uploadTime: LocalDateTime = LocalDateTime.now()
 )
 
 {
     // För JPA XDD
-    constructor() : this(null, null, null, LocalDateTime.now())
+    constructor() : this(null, null, null)
 }

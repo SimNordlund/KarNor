@@ -3,11 +3,10 @@ Content-Type: application/json
 
 {
   "fileName": "example1337.pdf",
-  "data": "SGVsbG8gd29ybGQh",
-  "uploadTime": "2024-09-17T12:34:56"
+  "data": "SGVsbG8gd29ybGQh"
 }
 
 ###
 
-GET http://localhost:8080/downloadPdf/9
+GET http://localhost:8080/downloadPdf/2
 Accept: application/pdf
