@@ -2,7 +2,7 @@ POST http://localhost:8080/save
 Content-Type: application/json
 
 {
-  "fileName": "example1337.pdf",
+  "fileName": "DtoTest.pdf",
   "data": "SGVsbG8gd29ybGQh"
 }
 

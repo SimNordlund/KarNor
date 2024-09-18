@@ -8,6 +8,7 @@ import java.time.LocalDateTime
 @SpringBootApplication
 open class KarNorApplication {
     init {
+        println("Pedro")
     }
 }
 
