@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface PdfRepo : JpaRepository<Pdf, Long> {
+    fun findByFileName(fileName: String): Pdf?
 }

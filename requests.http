@@ -3,10 +3,10 @@ Content-Type: application/json
 
 {
   "fileName": "DtoTest.pdf",
-  "data": "SGVsbG8gd29ybGQh"
+  "data": "QUY5OEM3NUExRDA3MkJGPl0gL1ByZXYgMjczMzE2L1hSZWZTdG0gMjcwMTU0Pj4NCnN0YXJ0eHJlZg0KMjk5MzM5DQolJUVPRg=="
 }
 
 ###
 
-GET http://localhost:8080/downloadPdf/2
+GET http://localhost:8080/downloadPdf/1
 Accept: application/pdf
