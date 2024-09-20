@@ -19,7 +19,7 @@ class PdfController(val pdfRepo: PdfRepo, val pdfServiceImpl: PdfServiceImpl) { 
 
     @GetMapping("/test")
     fun test(): String {
-        return "Testing Karnor!"
+        return "Rest API:et fungerar!"
     }
     @GetMapping("")
     fun test2(): String {
@@ -39,10 +39,9 @@ class PdfController(val pdfRepo: PdfRepo, val pdfServiceImpl: PdfServiceImpl) { 
         val resource = ByteArrayResource(pdfData)
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename=${pdf.fileName}")
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=${pdf.fileName}")  // Changed to 'inline'
             .contentType(MediaType.APPLICATION_PDF)
             .contentLength(pdfData.size.toLong())
             .body(resource)
     }
-
 }
