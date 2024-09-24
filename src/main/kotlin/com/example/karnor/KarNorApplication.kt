@@ -14,13 +14,13 @@ open class KarNorApplication {
     }
 
     // Define a CommandLineRunner bean that runs the seedData function when the application starts
-    @Bean
+/*    @Bean
     open fun commandLineRunner(dataSeeder: DataSeeder): CommandLineRunner {
         return CommandLineRunner {
             println("Running the seeder...")
             dataSeeder.seedData() // Call the seedData function
         }
-    }
+    }*/
 }
 
 fun main(args: Array<String>) {
