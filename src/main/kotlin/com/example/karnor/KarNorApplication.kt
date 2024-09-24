@@ -5,6 +5,7 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.context.annotation.Bean
 import org.springframework.boot.runApplication
+import org.springframework.context.annotation.Profile
 
 @SpringBootApplication
 open class KarNorApplication {
@@ -13,14 +14,14 @@ open class KarNorApplication {
         println("Pedro")
     }
 
-    // Define a CommandLineRunner bean that runs the seedData function when the application starts
-/*    @Bean
+   @Bean
+   @Profile("dev") // Add this line
     open fun commandLineRunner(dataSeeder: DataSeeder): CommandLineRunner {
         return CommandLineRunner {
             println("Running the seeder...")
-            dataSeeder.seedData() // Call the seedData function
+            dataSeeder.seedData()
         }
-    }*/
+    }
 }
 
 fun main(args: Array<String>) {
