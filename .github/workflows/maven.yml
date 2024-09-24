@@ -25,7 +25,7 @@ jobs:
           distribution: 'corretto'
           cache: maven
 
-      # Setting the environment variables for database connection
+      # Exporting the environment variables from GitHub Secrets
       - name: Set environment variables
         run: |
           echo "DATABASE_URL=${{ secrets.DATABASE_URL }}" >> $GITHUB_ENV
