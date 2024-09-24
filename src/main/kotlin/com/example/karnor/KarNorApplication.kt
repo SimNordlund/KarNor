@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Profile
 open class KarNorApplication {
 
     init {
-        println("Pedro")
+        println("Pedro works ACTION")
     }
 
    @Bean
