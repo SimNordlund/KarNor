@@ -26,5 +26,5 @@ open class KarNorApplication {
 
 fun main(args: Array<String>) {
     runApplication<KarNorApplication>(*args)
-    println("Hello")
+    println("Yo, main running again")
 }

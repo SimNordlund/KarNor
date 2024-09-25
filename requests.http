@@ -10,3 +10,8 @@ Content-Type: application/json
 
 GET http://localhost:8080/downloadPdf/1
 Accept: application/pdf
+
+###
+
+GET http://localhost:8080/downloadPdfByFileName/naturochsamhalle.pdf
+Accept: application/pdf
