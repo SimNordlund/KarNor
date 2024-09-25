@@ -15,7 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 
 @RestController
-class PdfController(val pdfServiceImpl: PdfServiceImpl) { //Dependency injection
+class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) { //Dependency injection
 
     @GetMapping("/test")
     fun test(): String {
@@ -39,7 +39,21 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl) { //Dependency injection
         val resource = ByteArrayResource(pdfData)
 
         return ResponseEntity.ok()
-            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=${pdf.fileName}")  // Changed to 'inline'
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=${pdf.fileName}")
+            .contentType(MediaType.APPLICATION_PDF)
+            .contentLength(pdfData.size.toLong())
+            .body(resource)
+    }
+
+    @GetMapping("/downloadPdfByFileName/{name}")
+    fun downloadPdfByFileName(@PathVariable name: String): ResponseEntity<ByteArrayResource> {
+        //val pdf = pdfServiceImpl.getPdfByIdFromDb(id)
+        val pdf = pdfRepo.findByFileName(name);
+        val pdfData = pdf?.data ?: throw RuntimeException("PDF data is missing")
+        val resource = ByteArrayResource(pdfData)
+
+        return ResponseEntity.ok()
+            .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=${pdf.fileName}")
             .contentType(MediaType.APPLICATION_PDF)
             .contentLength(pdfData.size.toLong())
             .body(resource)
