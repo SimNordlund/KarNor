@@ -15,3 +15,22 @@ Accept: application/pdf
 
 GET http://localhost:8080/downloadPdfByFileName/spsm3.pdf
 Accept: application/pdf
+
+###
+
+GET http://localhost:8080/getSiteComment/3
+
+###
+POST http://localhost:8080/saveSiteComment
+Content-Type: application/json
+
+{
+  "comment": "First kommentar hehe kekw",
+  "author": "John Bejs"
+}
+
+###
+GET http://localhost:8080/getAllSiteComments
+Accept: application/json
+
+

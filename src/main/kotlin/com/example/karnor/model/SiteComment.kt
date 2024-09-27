@@ -3,18 +3,16 @@ package com.example.karnor.model
 import jakarta.persistence.*
 
 @Entity
-class Pdf(
+class SiteComment(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    var fileName: String?,
+    var comment: String?,
 
-    @Lob
-    var data: ByteArray?,
+    var author: String?,
+
 )
-
-{
-    // För JPA XDD
+{ //Hibernate behöver både en all const + no const
     constructor() : this(null, null, null)
 }
