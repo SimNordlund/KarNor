@@ -2,8 +2,9 @@ package com.example.karnor.utils
 
 import com.example.karnor.model.Pdf
 import com.example.karnor.repository.PdfRepo
+import com.example.karnor.utils.base64.PdfPedPl
+import com.example.karnor.utils.base64.PdfSpsm
 import org.springframework.stereotype.Component
-import jakarta.annotation.PostConstruct
 import org.springframework.context.annotation.Profile
 import java.util.Base64
 
@@ -11,14 +12,18 @@ import java.util.Base64
 @Profile("dev")
 class DataSeeder(val pdfRepo: PdfRepo) {
 
-    private val pdfValues = PdfValues()
+    private val pdfPedPl = PdfPedPl()
+    private val pdfSpsm = PdfSpsm();
 
     fun seedData() {
-        checkOrStorePdf("verksamhetsberattelse.pdf", pdfValues.verksamhetsBerattelse)
-        checkOrStorePdf("sprakochkommunikation.pdf", pdfValues.sprakOchKommunikation)
-        checkOrStorePdf("lekar.pdf", pdfValues.lekar)
-        checkOrStorePdf("naturochsamhalle.pdf", pdfValues.naturOchSamhalle)
-        checkOrStorePdf("skapandeOchEstetiska.pdf", pdfValues.skapandeOchEstetiska)
+        checkOrStorePdf("verksamhetsberattelse.pdf", pdfPedPl.verksamhetsBerattelse)
+        checkOrStorePdf("sprakochkommunikation.pdf", pdfPedPl.sprakOchKommunikation)
+        checkOrStorePdf("lekar.pdf", pdfPedPl.lekar)
+        checkOrStorePdf("naturochsamhalle.pdf", pdfPedPl.naturOchSamhalle)
+        checkOrStorePdf("skapandeOchEstetiska.pdf", pdfPedPl.skapandeOchEstetiska)
+        checkOrStorePdf("spsm1.pdf", pdfSpsm.spsm1)
+        checkOrStorePdf("spsm2.pdf", pdfSpsm.spsm2)
+        checkOrStorePdf("spsm3.pdf", pdfSpsm.spsm3)
 
     }
 
