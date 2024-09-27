@@ -13,5 +13,5 @@ Accept: application/pdf
 
 ###
 
-GET http://localhost:8080/downloadPdfByFileName/naturochsamhalle.pdf
+GET http://localhost:8080/downloadPdfByFileName/spsm3.pdf
 Accept: application/pdf
