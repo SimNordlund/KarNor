@@ -1,0 +1,18 @@
+package com.example.karnor.model
+
+import jakarta.persistence.*
+
+@Entity
+class SiteComment(
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    var id: Long? = null,
+
+    var comment: String?,
+
+    var author: String?,
+
+)
+{ //Hibernate behöver både en all const + no const
+    constructor() : this(null, null, null)
+}
