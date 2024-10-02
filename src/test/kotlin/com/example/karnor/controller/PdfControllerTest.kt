@@ -16,10 +16,6 @@ class PdfControllerTest {
     }
 
     @Test
-    fun getPdfRepo() {
-    }
-
-    @Test
-    fun getPdfServiceImpl() {
+    fun downloadPdfByFileName() {
     }
 }

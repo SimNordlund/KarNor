@@ -15,7 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 
 @RestController
-class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) { //Dependency injection
+class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) {
 
     @GetMapping("/test")
     fun test(): String {
@@ -23,7 +23,7 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) { 
     }
     @GetMapping("")
     fun test2(): String {
-        return "Viva la Röva"
+        return "Rest API:et fungerar v2!"
     }
 
     @PostMapping("/save")
@@ -48,8 +48,8 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) { 
     @GetMapping("/downloadPdfByFileName/{name}")
     fun downloadPdfByFileName(@PathVariable name: String): ResponseEntity<ByteArrayResource> {
         //val pdf = pdfServiceImpl.getPdfByIdFromDb(id)
-        val pdf = pdfRepo.findByFileName(name);
-        val pdfData = pdf?.data ?: throw RuntimeException("PDF data is missing")
+        val pdf = pdfServiceImpl.getPdfByNameFromDb(name)
+        val pdfData = pdf.data ?: throw RuntimeException("PDF data is missing")
         val resource = ByteArrayResource(pdfData)
 
         return ResponseEntity.ok()

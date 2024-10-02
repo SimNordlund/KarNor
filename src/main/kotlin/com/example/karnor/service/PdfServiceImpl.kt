@@ -16,5 +16,10 @@ class PdfServiceImpl (val pdfRepo: PdfRepo) {
     fun getPdfByIdFromDb(id: Long): PdfDTO {
         return PdfConverter.pdfToPdfDto(pdfRepo.findById(id).orElseThrow{RuntimeException("PDF not found with id: $id")})
     }
+
+    fun getPdfByNameFromDb(fileName: String): PdfDTO {
+        val pdf = pdfRepo.findByFileName(fileName) ?: throw RuntimeException("PDF not found with file name: $fileName")
+        return PdfConverter.pdfToPdfDto(pdf)
+    }
 }
 
