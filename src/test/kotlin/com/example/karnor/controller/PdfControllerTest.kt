@@ -6,13 +6,6 @@ import org.junit.jupiter.api.Assertions.*
 
 class PdfControllerTest {
 
-    @Test
-    fun test1() {
-    }
-
-    @Test
-    fun test2() {
-    }
 
     @Test
     fun savePdf() {
