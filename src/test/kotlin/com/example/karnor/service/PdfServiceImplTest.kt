@@ -3,24 +3,20 @@ package com.example.karnor.service
 import com.example.karnor.dto.PdfDTO
 import com.example.karnor.model.Pdf
 import com.example.karnor.repository.PdfRepo
+import com.example.karnor.service.Converter.PdfConverter
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.springframework.boot.test.context.SpringBootTest
-import org.springframework.boot.test.mock.mockito.MockBean
-import org.junit.jupiter.api.Assertions.*
 import org.mockito.InjectMocks
 import org.mockito.Mockito.*
-import org.springframework.beans.factory.annotation.Autowired
 import java.util.*
 
 
 @SpringBootTest
-class PdfServiceImplTest ()
-
-{
+class PdfServiceImplTest {
     @Mock
     lateinit var pdfRepo: PdfRepo
 
@@ -28,10 +24,10 @@ class PdfServiceImplTest ()
     lateinit var pdfService: PdfServiceImpl
 
     @Test
-    fun `test testSaveDownOnePdfToDb`() {
+    fun testSaveDownOnePdfToDb() {
         val pdfDto = PdfDTO(1L, "testFileName", "testData".toByteArray())
-        val pdfEntity = Pdf(1L, "testFileName", "testData".toByteArray())
-        `when`(pdfRepo.save(any(Pdf::class.java))).thenReturn(pdfEntity)
+        val pdf = PdfConverter.pdfDtoToPdf(pdfDto)
+        `when`(pdfRepo.save(any(Pdf::class.java))).thenReturn(pdf)
 
         val result = pdfService.saveDownOnePdfToDb(pdfDto)
 
@@ -41,13 +37,12 @@ class PdfServiceImplTest ()
 
     @Test
     fun testGetPdfByIdFromDb() {
-        val pdfDto = PdfDTO(2L, "tempFile", "tempData".toByteArray())
         val pdf = Pdf(2L, "tempFile", "tempData".toByteArray())
-        `when`(pdfRepo.findById(2)).thenReturn(Optional.of(pdf))
+        `when`(pdfRepo.findById(2L)).thenReturn(Optional.of(pdf))
 
-        val result = pdfRepo.findById(2)
+        val result = pdfService.getPdfByIdFromDb(2L)
 
-        //assertEquals("test", result)
-
+        verify(pdfRepo, times(1)).findById(2L)
+        assertEquals(PdfConverter.pdfToPdfDto(pdf), result)
     }
 }
