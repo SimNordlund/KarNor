@@ -6,7 +6,7 @@ import com.example.karnor.service.Converter.PdfConverter
 import org.springframework.stereotype.Service
 
 @Service
-class PdfServiceImpl (val pdfRepo: PdfRepo) {
+class PdfServiceImpl(val pdfRepo: PdfRepo) {
 
     fun saveDownOnePdfToDb(pdfDto: PdfDTO): String {
         pdfRepo.save(PdfConverter.pdfDtoToPdf(pdfDto))
@@ -14,7 +14,8 @@ class PdfServiceImpl (val pdfRepo: PdfRepo) {
     }
 
     fun getPdfByIdFromDb(id: Long): PdfDTO {
-        return PdfConverter.pdfToPdfDto(pdfRepo.findById(id).orElseThrow{RuntimeException("PDF not found with id: $id")})
+        return PdfConverter.pdfToPdfDto(
+            pdfRepo.findById(id).orElseThrow { RuntimeException("PDF not found with id: $id") })
     }
 
     fun getPdfByNameFromDb(fileName: String): PdfDTO {

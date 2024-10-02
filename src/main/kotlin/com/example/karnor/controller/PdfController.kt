@@ -21,14 +21,15 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) {
     fun test(): String {
         return "Rest API:et fungerar!"
     }
+
     @GetMapping("")
     fun test2(): String {
         return "Rest API:et fungerar v2!"
     }
 
     @PostMapping("/save")
-    fun savePdf(@RequestBody pdfDTO: PdfDTO): String   {
-        pdfServiceImpl.saveDownOnePdfToDb(pdfDTO);
+    fun savePdf(@RequestBody pdfDTO: PdfDTO): String {
+        pdfServiceImpl.saveDownOnePdfToDb(pdfDTO)
         return "PDF:en sparades ner!"
     }
 
@@ -47,7 +48,6 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) {
 
     @GetMapping("/downloadPdfByFileName/{name}")
     fun downloadPdfByFileName(@PathVariable name: String): ResponseEntity<ByteArrayResource> {
-        //val pdf = pdfServiceImpl.getPdfByIdFromDb(id)
         val pdf = pdfServiceImpl.getPdfByNameFromDb(name)
         val pdfData = pdf.data ?: throw RuntimeException("PDF data is missing")
         val resource = ByteArrayResource(pdfData)

@@ -45,4 +45,15 @@ class PdfServiceImplTest {
         verify(pdfRepo, times(1)).findById(2L)
         assertEquals(PdfConverter.pdfToPdfDto(pdf), result)
     }
+
+    @Test
+    fun testGetPdfByNameFromDb() {
+        val pdf = Pdf(2L, "tempFile", "tempData".toByteArray())
+        `when`(pdfRepo.findByFileName("tempFile")).thenReturn(pdf)
+
+        val result = pdfService.getPdfByNameFromDb("tempFile")
+
+        verify(pdfRepo, times(1)).findByFileName("tempFile")
+        assertEquals(PdfConverter.pdfToPdfDto(pdf), result)
+    }
 }
