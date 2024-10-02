@@ -15,7 +15,7 @@ import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 
 @RestController
-class PdfController(val pdfServiceImpl: PdfServiceImpl, val pdfRepo: PdfRepo) {
+class PdfController(val pdfServiceImpl: PdfServiceImpl) {
 
     @GetMapping("/test")
     fun test(): String {
