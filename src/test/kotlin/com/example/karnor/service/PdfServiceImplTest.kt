@@ -14,6 +14,7 @@ import org.junit.jupiter.api.Assertions.*
 import org.mockito.InjectMocks
 import org.mockito.Mockito.*
 import org.springframework.beans.factory.annotation.Autowired
+import java.util.*
 
 
 @SpringBootTest
@@ -40,5 +41,13 @@ class PdfServiceImplTest ()
 
     @Test
     fun testGetPdfByIdFromDb() {
+        val pdfDto = PdfDTO(2L, "tempFile", "tempData".toByteArray())
+        val pdf = Pdf(2L, "tempFile", "tempData".toByteArray())
+        `when`(pdfRepo.findById(2)).thenReturn(Optional.of(pdf))
+
+        val result = pdfRepo.findById(2)
+
+        //assertEquals("test", result)
+
     }
 }
