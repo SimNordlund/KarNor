@@ -8,5 +8,5 @@ import org.springframework.transaction.annotation.Transactional
 @Repository
 interface PdfRepo : JpaRepository<Pdf, Long> {
     @Transactional(readOnly = true)
-    fun findByFileName(name : String): Pdf? //Behövs ? för att markera att null kan returneras. XD
+    fun findByFileName(name : String): Pdf?
 }

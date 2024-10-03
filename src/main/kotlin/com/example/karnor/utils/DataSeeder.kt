@@ -28,8 +28,6 @@ class DataSeeder(val pdfRepo: PdfRepo) {
     }
 
     private fun checkOrStorePdf(pdfName: String, pdfBase64: String) {
-        //val base64Pdf = pdfValues.verksamhetsBerattelse
-
         val pdfData = Base64.getDecoder().decode(pdfBase64)
         val existingPdf = pdfRepo.findByFileName(pdfName)
 
