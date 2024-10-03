@@ -10,7 +10,7 @@ open class WebConfig : WebMvcConfigurer {
 
     override fun addCorsMappings(registry: CorsRegistry) {
         registry.addMapping("/**")
-            .allowedOrigins("http://localhost:5173", "https://karnor.onrender.com")  // No trailing slashes
+            .allowedOrigins("http://localhost:5173", "https://karnor.onrender.com")
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
             .allowCredentials(true)

@@ -17,7 +17,7 @@ open class KarNorApplication {
     }
 
    @Bean
-   @Profile("dev") // Add this line
+   @Profile("dev")
     open fun commandLineRunner(dataSeeder: DataSeeder): CommandLineRunner {
         return CommandLineRunner {
             println("Running the seeder for pdf")
