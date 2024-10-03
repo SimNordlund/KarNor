@@ -13,6 +13,6 @@ class SiteComment(
     var author: String?,
 
 )
-{ //Hibernate behöver både en all const + no const
+{
     constructor() : this(null, null, null)
 }

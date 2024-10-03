@@ -15,6 +15,5 @@ class Pdf(
 )
 
 {
-    // För JPA XDD
     constructor() : this(null, null, null)
 }
