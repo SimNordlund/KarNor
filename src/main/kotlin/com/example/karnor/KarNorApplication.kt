@@ -20,7 +20,7 @@ open class KarNorApplication {
    @Profile("dev")
     open fun commandLineRunner(dataSeeder: DataSeeder): CommandLineRunner {
         return CommandLineRunner {
-            println("Running the seeder for pdf")
+            println("Running the seeder for PDF")
             dataSeeder.seedData()
         }
     }
