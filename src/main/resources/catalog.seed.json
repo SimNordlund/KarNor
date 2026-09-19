@@ -1,0 +1,185 @@
+{
+  "revision": 1,
+  "categories": [
+    "Lek & rörelse",
+    "Natur & uteliv",
+    "Skapande",
+    "Värdegrund",
+    "Planering"
+  ],
+  "products": [
+    {
+      "id": "argsolen",
+      "title": "Argsolen – det är okej att vara arg",
+      "coverTitle": "Det är okej att vara arg",
+      "subtitle": "Bildstöd för att prata om ilska",
+      "category": "Värdegrund",
+      "price": 29,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3"
+      ],
+      "theme": "butter",
+      "motif": "friends",
+      "badge": "Utvalt",
+      "description": "En färgglad sol med ett viktigt budskap: alla känslor får finnas, men vi får inte göra varandra illa. Solens strålar visar olika sätt att hantera ilska och hitta tillbaka till lugnet.",
+      "includes": [
+        "En illustrerad affisch om känslan arg",
+        "Åtta förslag på vad man kan göra när man är arg",
+        "Bildstöd att använda i samtal på fritids"
+      ],
+      "image": {
+        "src": "/shop/argsolen.png",
+        "width": 1054,
+        "height": 1492,
+        "alt": "En gul sol med budskapet att det är okej att vara arg men aldrig att göra någon illa. Strålarna visar bland annat att använda sina ord, räkna, ta djupa andetag och be en vuxen om hjälp."
+      },
+      "status": "published"
+    },
+    {
+      "id": "jag-kanner-mig-radd",
+      "title": "Jag känner mig rädd – samtal om trygghet",
+      "coverTitle": "Jag känner mig rädd",
+      "subtitle": "Berätta, peka eller rita",
+      "category": "Värdegrund",
+      "price": 29,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3"
+      ],
+      "theme": "sky",
+      "motif": "calm",
+      "description": "Ett illustrerat samtalsstöd som ger barn utrymme att berätta om rädsla och trygghet. Fyra frågor öppnar för samtal om hur rädsla känns och vem eller vad som kan hjälpa.",
+      "includes": [
+        "En affisch med fyra samtalsfrågor",
+        "Bilder om känslor, kroppens signaler och trygghet",
+        "Förslag på att svara genom att berätta, peka eller rita"
+      ],
+      "image": {
+        "src": "/shop/jag-kanner-mig-radd.png",
+        "width": 1054,
+        "height": 1492,
+        "alt": "Affischen Jag känner mig rädd med fyra frågor: När brukar du bli rädd? Hur känns det i kroppen? Vad hjälper dig att känna dig trygg? Vem kan hjälpa dig?"
+      },
+      "status": "published"
+    },
+    {
+      "id": "vildhastarna",
+      "title": "Vildhästarna – rastaktivitet med rockringar",
+      "coverTitle": "Vildhästarna",
+      "subtitle": "En lekfull rastaktivitet",
+      "category": "Lek & rörelse",
+      "price": 35,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3",
+        "4–6"
+      ],
+      "theme": "sage",
+      "motif": "movement",
+      "description": "En aktivitetsaffisch för leken Vildhästarna. Här finns materiallista, instruktioner i tre steg och exempel på vad gruppen får öva genom leken.",
+      "includes": [
+        "En illustrerad aktivitetsaffisch",
+        "Materiallista med två rockringar och åtta koner",
+        "Lekinstruktioner och fokusområden som samspel, motorik och rörelseglädje"
+      ],
+      "image": {
+        "src": "/shop/vildhastarna.png",
+        "width": 1054,
+        "height": 1492,
+        "alt": "Vildhästarna, en rastaktivitet där barn leker på skolgården med rockringar och koner. Affischen innehåller materiallista, regler i tre steg och lekens pedagogiska fokusområden."
+      },
+      "status": "published"
+    },
+    {
+      "id": "kanslan-arg",
+      "title": "Känslan arg – förstå känslan tillsammans",
+      "coverTitle": "Känslan arg",
+      "subtitle": "Från starka känslor till att bli sams igen",
+      "category": "Värdegrund",
+      "price": 29,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3"
+      ],
+      "theme": "rose",
+      "motif": "friends",
+      "description": "En överskådlig affisch om vad ilska är, när den kan uppstå och hur den kan kännas. Illustrationer och korta texter ger stöd för att prata om känslor, lugn och att bli sams igen.",
+      "includes": [
+        "En affisch om känslan arg",
+        "Exempel på vad man kan göra när ilskan blir stor",
+        "Samtalsstöd om vad som händer efteråt och hur man blir sams"
+      ],
+      "image": {
+        "src": "/shop/kanslan-arg.png",
+        "width": 1055,
+        "height": 1491,
+        "alt": "Känslan arg: en affisch med illustrerade rutor om när man blir arg, hur stark ilska känns, vad man kan göra istället för att skada någon och hur man blir sams igen."
+      },
+      "status": "published"
+    },
+    {
+      "id": "dans-och-musikvideos",
+      "title": "Dans och musikvideos – rörelse till musik",
+      "coverTitle": "Dans och musikvideos",
+      "subtitle": "Rör på kroppen och dansa tillsammans",
+      "category": "Lek & rörelse",
+      "price": 35,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3",
+        "4–6"
+      ],
+      "ageLabel": "2–12 år",
+      "theme": "peach",
+      "motif": "movement",
+      "description": "En färgglad översikt med tio tips på dans- och musikvideor för barn. Varje tips har en kort beskrivning, en åldersangivelse samt en tryckt webbadress och QR-kod i bilden.",
+      "includes": [
+        "En tipsaffisch med tio dans- och musikvideor",
+        "Korta beskrivningar och åldersangivelser",
+        "Webbadresser och QR-koder i affischen; videorna ingår inte i materialet"
+      ],
+      "image": {
+        "src": "/shop/dans-och-musikvideos.png",
+        "width": 1055,
+        "height": 1491,
+        "alt": "Dans och musikvideos för barn: en affisch med tio videotips, däribland Danny Go, GoNoodle, Just Dance Kids och Freeze Dance, med beskrivningar, åldrar och QR-koder."
+      },
+      "status": "published"
+    },
+    {
+      "id": "samtalsfragor-om-ilska",
+      "title": "Samtalsfrågor om ilska – för 5–6-åringar",
+      "coverTitle": "Frågor om känslan arg",
+      "subtitle": "Alla känslor är viktiga",
+      "category": "Värdegrund",
+      "price": 29,
+      "format": "PNG",
+      "pages": 1,
+      "ages": [
+        "F–3"
+      ],
+      "ageLabel": "5–6 år",
+      "theme": "lilac",
+      "motif": "friends",
+      "description": "Ett bildrikt samtalsunderlag för yngre barn om känslan arg. Frågorna handlar om kroppens signaler, vad som kan väcka ilska och hur vi kan hjälpa oss själva och varandra.",
+      "includes": [
+        "En affisch med fjorton samtalsfrågor",
+        "Illustrerade situationer och exempel som stöd för samtalet",
+        "Frågor om omtanke, empati och att hitta lugnet tillsammans"
+      ],
+      "image": {
+        "src": "/shop/samtalsfragor-om-ilska.png",
+        "width": 1055,
+        "height": 1491,
+        "alt": "Frågor till 5–6-åringar om känslan arg. Fjorton illustrerade samtalsrutor om hur ilska känns, vad som hjälper, vem man kan prata med och hur man stöttar en arg kompis."
+      },
+      "status": "published"
+    }
+  ]
+}
