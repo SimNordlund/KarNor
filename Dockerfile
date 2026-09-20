@@ -1,5 +1,5 @@
 # Step 1: Build the application using Maven
-FROM maven:3.8.4-openjdk-17 AS build
+FROM maven:3.9-eclipse-temurin-17 AS build
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -12,7 +12,7 @@ COPY ./src ./src
 RUN mvn clean package
 
 # Step 2: Create a smaller image for running the application
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jre-jammy
 
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/KarNor-0.0.1-SNAPSHOT.jar /app.jar
