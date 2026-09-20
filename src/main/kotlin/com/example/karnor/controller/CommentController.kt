@@ -27,5 +27,4 @@ class CommentController (private val siteCommentRepo: SiteCommentRepo) {
     fun getAllSiteComments(): List <SiteComment> {
         return siteCommentRepo.findAll()
     }
-
 }
