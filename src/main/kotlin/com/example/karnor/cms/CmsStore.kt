@@ -91,7 +91,7 @@ class CmsStore(
     val directory: Path = Path.of(dataDirectory).toAbsolutePath().normalize()
     private val files = directory.resolve("files")
     private val stateFile = directory.resolve("store.json")
-    private var state: CmsState
+    private lateinit var state: CmsState
 
     init {
         Files.createDirectories(files)
