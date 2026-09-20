@@ -28,5 +28,4 @@ class CommentController (private val siteCommentRepo: SiteCommentRepo) {
         return siteCommentRepo.findAll()
     }
 
-
 }
