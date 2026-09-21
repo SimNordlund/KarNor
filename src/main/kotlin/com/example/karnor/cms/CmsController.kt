@@ -160,6 +160,9 @@ class CmsController(
         val idsNode = input.path("productIds")
         val requestId = input.path("requestId").asText("")
         if (!idsNode.isArray || idsNode.size() !in 1..30 || idsNode.any { !it.isTextual } || !requestId.matches(Regex("^[a-f0-9-]{36}$"))) throw CmsError(400, "Kontrollera varukorgen och försök igen.")
+        if (!input.path("acceptedTerms").asBoolean(false) || !input.path("acceptedDigitalDelivery").asBoolean(false)) {
+            throw CmsError(400, "Du behöver godkänna köpvillkoren och den omedelbara digitala leveransen.")
+        }
         val ids = idsNode.map { it.asText() }.distinct()
         var buyer = cookie(request, "karnor_buyer")
         if (!buyer.matches(Regex("^[a-f0-9]{64}$"))) buyer = token()
@@ -180,13 +183,24 @@ class CmsController(
                     if (asset?.kind != "file") throw CmsError(409, "Ett material är inte längre tillgängligt. Uppdatera varukorgen.")
                     OrderItem(id, product.title, product.format, product.price, kotlin.math.round(product.price * 100).toLong(), asset.id)
                 }
-                Order(UUID.randomUUID().toString(), buyerHash, requestKey, items, items.sumOf { it.amount }, System.currentTimeMillis()).also { state.orders[it.id] = it }
+                val createdAt = System.currentTimeMillis()
+                Order(
+                    id = UUID.randomUUID().toString(),
+                    buyerHash = buyerHash,
+                    requestKey = requestKey,
+                    items = items,
+                    amount = items.sumOf { it.amount },
+                    createdAt = createdAt,
+                    termsVersion = "2026-09-21",
+                    digitalDeliveryConsentAt = createdAt,
+                ).also { state.orders[it.id] = it }
             }
         }
         if (order.checkoutUrl != null && (order.expiresAt ?: 0) > Instant.now().epochSecond) return mapOf("url" to order.checkoutUrl!!)
         if (order.checkoutUrl != null) throw CmsError(409, "Betalningssessionen har gått ut. Stäng varukorgen och försök igen.")
         val form = mutableMapOf(
             "mode" to "payment", "locale" to "sv",
+            "payment_method_types[0]" to "swish",
             "success_url" to "$origin/butik/tack?session_id={CHECKOUT_SESSION_ID}",
             "cancel_url" to "$origin/butik?betalning=avbruten", "metadata[orderId]" to order.id,
         )
@@ -194,6 +208,7 @@ class CmsController(
             form["line_items[$index][price_data][currency]"] = "sek"
             form["line_items[$index][price_data][unit_amount]"] = item.amount.toString()
             form["line_items[$index][price_data][product_data][name]"] = item.title
+            form["line_items[$index][price_data][product_data][description]"] = "${item.format} · Digital nedladdning"
             form["line_items[$index][quantity]"] = "1"
         }
         val session = stripe.request("checkout/sessions", form, order.id)
@@ -219,14 +234,20 @@ class CmsController(
             stripe.recordPayment(stripe.request("checkout/sessions/${URLEncoder.encode(sessionId, StandardCharsets.UTF_8)}"))
             found = store.snapshot().orders[found.id] ?: found
         }
-        return mapOf(
-            "id" to found.id, "status" to found.status, "total" to found.amount / 100.0,
+        return mutableMapOf<String, Any>(
+            "id" to found.id,
+            "status" to found.status,
+            "total" to found.amount / 100.0,
+            "createdAt" to found.createdAt,
+            "termsVersion" to found.termsVersion,
             "items" to found.items.map { item ->
                 mutableMapOf<String, Any>("id" to item.id, "title" to item.title, "format" to item.format).apply {
                     if (found.status == "paid") put("downloadUrl", "/api/downloads/${found.id}/${item.assetId}")
                 }
             },
-        )
+        ).apply {
+            found.digitalDeliveryConsentAt?.let { put("digitalDeliveryConsentAt", it) }
+        }
     }
 
     @GetMapping("/api/downloads/{orderId}/{assetId}")

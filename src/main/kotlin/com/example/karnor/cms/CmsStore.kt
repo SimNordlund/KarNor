@@ -68,6 +68,8 @@ data class Order(
     val items: List<OrderItem>,
     val amount: Long,
     val createdAt: Long,
+    val termsVersion: String = "",
+    val digitalDeliveryConsentAt: Long? = null,
     var status: String = "pending",
     var sessionId: String? = null,
     var checkoutUrl: String? = null,
