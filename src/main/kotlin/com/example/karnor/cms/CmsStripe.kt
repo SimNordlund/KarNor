@@ -18,6 +18,7 @@ import javax.crypto.spec.SecretKeySpec
 class CmsStripe(
     private val mapper: ObjectMapper,
     private val store: CmsStore,
+    private val delivery: CmsDelivery,
     @Value("\${STRIPE_SECRET_KEY:}") private val secretKey: String,
     @Value("\${STRIPE_WEBHOOK_SECRET:}") private val webhookSecret: String,
 ) {
@@ -78,6 +79,11 @@ class CmsStripe(
             if (session.path("payment_status").asText() == "paid" && session.path("status").asText() == "complete" && order.status != "paid") {
                 order.status = "paid"
                 order.paidAt = System.currentTimeMillis()
+            }
+            if (order.status == "paid" && order.emailDelivery == null && order.emailDeliveryRequested) {
+                val email = session.path("customer_details").path("email").asText("")
+                    .ifBlank { session.path("customer_email").asText("") }
+                order.emailDelivery = delivery.createDelivery(email, order.paidAt ?: System.currentTimeMillis())
             }
         }
     }

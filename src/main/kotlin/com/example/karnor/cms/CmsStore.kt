@@ -61,6 +61,20 @@ data class OrderItem(
     val assetId: String,
 )
 
+data class EmailDelivery(
+    val email: String = "",
+    val token: String = "",
+    val expiresAt: Long = 0,
+    var status: String = "pending",
+    var attempts: Int = 0,
+    var firstAttemptAt: Long? = null,
+    var nextAttemptAt: Long = 0,
+    var attachmentAssetIds: List<String>? = null,
+    var sentAt: Long? = null,
+    var providerId: String? = null,
+    var lastError: String? = null,
+)
+
 data class Order(
     val id: String,
     val buyerHash: String,
@@ -70,11 +84,13 @@ data class Order(
     val createdAt: Long,
     val termsVersion: String = "",
     val digitalDeliveryConsentAt: Long? = null,
+    val emailDeliveryRequested: Boolean = false,
     var status: String = "pending",
     var sessionId: String? = null,
     var checkoutUrl: String? = null,
     var expiresAt: Long? = null,
     var paidAt: Long? = null,
+    var emailDelivery: EmailDelivery? = null,
 )
 
 data class CmsState(
