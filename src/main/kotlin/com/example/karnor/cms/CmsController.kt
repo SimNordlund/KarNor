@@ -42,6 +42,7 @@ class CmsErrors {
 class CmsController(
     private val store: CmsStore,
     private val stripe: CmsStripe,
+    private val delivery: CmsDelivery,
     private val validator: CatalogValidation,
     private val mapper: ObjectMapper,
     @Value("\${APP_URL:http://localhost:5173}") appUrl: String,
@@ -54,12 +55,15 @@ class CmsController(
     private val attempts = ConcurrentHashMap<String, Attempt>()
     private val adminLifetime = 8 * 60 * 60 * 1000L
     private val buyerLifetime = 30 * 24 * 60 * 60 * 1000L
+    private val minimumCheckoutTotal = 3
 
     @GetMapping("/api/catalog")
     fun publicCatalog(): ObjectNode {
         val state = store.snapshot()
         val result = mapper.valueToTree<ObjectNode>(state.catalog)
         result.put("checkoutConfigured", stripe.configured)
+        result.put("minimumCheckoutTotal", minimumCheckoutTotal)
+        result.put("emailDeliveryConfigured", delivery.configured)
         val products = mapper.createArrayNode()
         state.catalog.products.filter { it.status == "published" }.forEach { product ->
             val node = mapper.valueToTree<ObjectNode>(product)
@@ -107,6 +111,8 @@ class CmsController(
         val state = store.snapshot()
         val result = mapper.valueToTree<ObjectNode>(state.catalog)
         result.put("checkoutConfigured", stripe.configured)
+        result.put("minimumCheckoutTotal", minimumCheckoutTotal)
+        result.put("emailDeliveryConfigured", delivery.configured)
         val assets = mapper.createArrayNode()
         state.assets.values.forEach { asset ->
             assets.add(mapper.valueToTree<ObjectNode>(asset).apply { remove("filename") })
@@ -184,18 +190,22 @@ class CmsController(
                     OrderItem(id, product.title, product.format, product.price, kotlin.math.round(product.price * 100).toLong(), asset.id)
                 }
                 val createdAt = System.currentTimeMillis()
+                val amount = items.sumOf { it.amount }
+                if (amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta belopp för betalning med Swish är $minimumCheckoutTotal kr.")
                 Order(
                     id = UUID.randomUUID().toString(),
                     buyerHash = buyerHash,
                     requestKey = requestKey,
                     items = items,
-                    amount = items.sumOf { it.amount },
+                    amount = amount,
                     createdAt = createdAt,
-                    termsVersion = "2026-09-21",
+                    termsVersion = "2026-10-11",
                     digitalDeliveryConsentAt = createdAt,
+                    emailDeliveryRequested = delivery.configured,
                 ).also { state.orders[it.id] = it }
             }
         }
+        if (order.amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta belopp för betalning med Swish är $minimumCheckoutTotal kr.")
         if (order.checkoutUrl != null && (order.expiresAt ?: 0) > Instant.now().epochSecond) return mapOf("url" to order.checkoutUrl!!)
         if (order.checkoutUrl != null) throw CmsError(409, "Betalningssessionen har gått ut. Stäng varukorgen och försök igen.")
         val form = mutableMapOf(
@@ -204,6 +214,7 @@ class CmsController(
             "success_url" to "$origin/butik/tack?session_id={CHECKOUT_SESSION_ID}",
             "cancel_url" to "$origin/butik?betalning=avbruten", "metadata[orderId]" to order.id,
         )
+        if (order.emailDeliveryRequested) form["metadata[emailDelivery]"] = "resend"
         order.items.forEachIndexed { index, item ->
             form["line_items[$index][price_data][currency]"] = "sek"
             form["line_items[$index][price_data][unit_amount]"] = item.amount.toString()
@@ -247,7 +258,28 @@ class CmsController(
             },
         ).apply {
             found.digitalDeliveryConsentAt?.let { put("digitalDeliveryConsentAt", it) }
+            if (found.status == "paid") found.emailDelivery?.let { email ->
+                put("emailDelivery", mapOf(
+                    "status" to email.status,
+                    "email" to email.email,
+                    "attachmentCount" to (email.attachmentAssetIds?.size ?: 0),
+                ))
+            }
         }
+    }
+
+    @GetMapping("/api/email-downloads/{orderId}/{assetId}")
+    fun emailDownload(@PathVariable orderId: String, @PathVariable assetId: String, @RequestParam token: String): ResponseEntity<ByteArray> {
+        val state = store.snapshot()
+        val order = state.orders[orderId]
+        val email = order?.emailDelivery
+        if (order == null || order.status != "paid" || email == null || email.expiresAt <= System.currentTimeMillis()
+            || !token.matches(Regex("^[a-f0-9]{64}$")) || !MessageDigest.isEqual(sha256(token), sha256(email.token))
+            || order.items.none { it.assetId == assetId }) {
+            throw CmsError(403, "Nedladdningslänken är ogiltig eller har gått ut. Kontakta Karnor för hjälp.")
+        }
+        val asset = state.assets[assetId]?.takeIf { it.kind == "file" } ?: throw CmsError(404, "Filen kunde inte hittas.")
+        return assetResponse(asset, true)
     }
 
     @GetMapping("/api/downloads/{orderId}/{assetId}")
@@ -281,6 +313,7 @@ class CmsController(
         headers.contentType = MediaType.parseMediaType(asset.mime)
         headers.cacheControl = if (download) "private, no-store" else "public, max-age=31536000, immutable"
         headers.add("X-Content-Type-Options", "nosniff")
+        headers.add("Referrer-Policy", "no-referrer")
         if (download) headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename*=UTF-8''${URLEncoder.encode(asset.name, StandardCharsets.UTF_8).replace("+", "%20")}")
         return ResponseEntity.ok().headers(headers).contentLength(bytes.size.toLong()).body(bytes)
     }

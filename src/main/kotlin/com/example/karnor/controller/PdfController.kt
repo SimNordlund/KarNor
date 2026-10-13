@@ -33,7 +33,7 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl) {
         return "PDF:en sparades ner!"
     }
 
-    @GetMapping("/downloadPdf/{id}")
+    @GetMapping(value = ["/api/resources/pdfs/{id}", "/downloadPdf/{id}"])
     fun downloadPdf(@PathVariable id: Long): ResponseEntity<ByteArrayResource> {
         val pdf = pdfServiceImpl.getPdfByIdFromDb(id)
         val pdfData = pdf.data ?: throw RuntimeException("PDF data is missing")
@@ -46,7 +46,7 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl) {
             .body(resource)
     }
 
-    @GetMapping("/downloadPdfByFileName/{name}")
+    @GetMapping(value = ["/api/resources/pdfs/by-name/{name}", "/downloadPdfByFileName/{name}"])
     fun downloadPdfByFileName(@PathVariable name: String): ResponseEntity<ByteArrayResource> {
         val pdf = pdfServiceImpl.getPdfByNameFromDb(name)
         val pdfData = pdf.data ?: throw RuntimeException("PDF data is missing")
