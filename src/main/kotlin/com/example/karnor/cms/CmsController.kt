@@ -1,5 +1,6 @@
 package com.example.karnor.cms
 
+import com.example.karnor.security.SiteUrls
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -45,11 +46,11 @@ class CmsController(
     private val delivery: CmsDelivery,
     private val validator: CatalogValidation,
     private val mapper: ObjectMapper,
-    @Value("\${APP_URL:http://localhost:5173}") appUrl: String,
+    private val urls: SiteUrls,
     @Value("\${ADMIN_PASSWORD:}") private val adminPassword: String,
 ) {
-    private val origin = URI.create(appUrl).let { "${it.scheme}://${it.host}${if (it.port >= 0) ":${it.port}" else ""}" }
-    private val secure = origin.startsWith("https:")
+    private val origin = urls.frontendOrigin
+    private val secure = urls.secureCookies
     private val random = SecureRandom()
     private val sessions = ConcurrentHashMap<String, AdminSession>()
     private val attempts = ConcurrentHashMap<String, Attempt>()
@@ -345,7 +346,7 @@ class CmsController(
     private fun cookie(request: HttpServletRequest, name: String): String = request.cookies?.find { it.name == name }?.value ?: ""
 
     private fun setCookie(response: HttpServletResponse, name: String, value: String, seconds: Long, sameSite: String) {
-        response.addHeader("Set-Cookie", "$name=$value; Path=/; HttpOnly; SameSite=$sameSite; Max-Age=$seconds${if (secure) "; Secure" else ""}")
+        response.addHeader("Set-Cookie", "$name=$value; Path=/; HttpOnly; SameSite=${if (urls.crossOriginCookies) "None" else sameSite}; Max-Age=$seconds${if (secure) "; Secure" else ""}")
     }
 
     private fun token(): String = ByteArray(32).also { random.nextBytes(it) }.let { hex(it) }
