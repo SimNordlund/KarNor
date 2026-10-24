@@ -1,5 +1,6 @@
 package com.example.karnor.cms
 
+import com.example.karnor.security.SiteUrls
 import com.fasterxml.jackson.databind.ObjectMapper
 import jakarta.annotation.PostConstruct
 import jakarta.annotation.PreDestroy
@@ -28,9 +29,9 @@ class CmsDelivery(
     @Value("\${RESEND_API_KEY:}") private val apiKey: String,
     @Value("\${MAIL_FROM:}") private val from: String,
     @Value("\${MAIL_REPLY_TO:}") private val replyTo: String,
-    @Value("\${APP_URL:http://localhost:5173}") appUrl: String,
+    private val urls: SiteUrls,
 ) {
-    private val origin = URI.create(appUrl).let { "${it.scheme}://${it.host}${if (it.port >= 0) ":${it.port}" else ""}" }
+    private val origin = urls.frontendOrigin
     private val client = HttpClient.newBuilder().connectTimeout(Duration.ofSeconds(10)).build()
     private val logger = LoggerFactory.getLogger(CmsDelivery::class.java)
     private val random = SecureRandom()
@@ -133,7 +134,7 @@ class CmsDelivery(
                 "content" to Base64.getEncoder().encodeToString(bytes),
             )
         }
-        val links = order.items.map { item -> item.title to "$origin/api/email-downloads/${order.id}/${item.assetId}?token=${email.token}" }
+        val links = order.items.map { item -> item.title to "${urls.apiOrigin}/api/email-downloads/${order.id}/${item.assetId}?token=${email.token}" }
         val total = NumberFormat.getCurrencyInstance(Locale.forLanguageTag("sv-SE")).format(order.amount / 100.0)
         val deliveryText = if (attachments.isNotEmpty()) "Dina material finns bifogade i det här mejlet."
             else "Materialen är för stora för att bifogas i ett mejl. Hämta dem via de skyddade länkarna nedan."

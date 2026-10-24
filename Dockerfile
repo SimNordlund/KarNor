@@ -14,6 +14,9 @@ RUN mvn clean package
 # Step 2: Create a smaller image for running the application
 FROM eclipse-temurin:17-jre-jammy
 
+# Production frontend origin; Render environment variables can override this.
+ENV APP_URL=https://karnor.onrender.com
+
 # Copy the JAR file from the build stage
 COPY --from=build /app/target/KarNor-0.0.1-SNAPSHOT.jar /app.jar
 
