@@ -1,0 +1,25 @@
+# Kotlin CMS API
+
+This Kotlin/Spring project is the only backend. It owns catalog validation, authentication, persistence, payment verification, download authorization and email delivery. The separate React project contains frontend code and uses the API: `/api/catalog`, `/api/admin/*`, `/api/checkout`, `/api/orders/*`, `/api/downloads/*`, `/api/stripe/webhook`, and `/media/*`. PDF resources use `/api/resources/pdfs/by-name/{name}` and `/api/resources/pdfs/{id}`. The existing `/downloadPdfByFileName/{name}` and `/downloadPdf/{id}` endpoints remain as aliases.
+
+Set `PORT` to the Spring listener port (default 8080), configure `DATABASE_URL`, `DATABASE_USERNAME` and `DATABASE_PASSWORD` for PostgreSQL, and set `APP_URL` to the exact frontend origin used for CORS, cookies, checkout redirects and email links. Set `ADMIN_PASSWORD` to a unique password of at least 12 characters, and `KARNOR_DATA_DIR` to a durable, private directory. The default data directory is `./data`. Back up the entire directory, including `store.json` and `files`. Run one backend instance against that directory; concurrent replicas need shared database and object storage.
+
+To enable payment, set `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET`. Checkout uses Swish only, in SEK, with a minimum order total of 3 SEK. Spring enforces this limit and exposes `minimumCheckoutTotal` in the public and admin catalog responses; React uses that value when displaying checkout availability. Swish must be available and enabled on the Stripe account. Register `/api/stripe/webhook` for `checkout.session.completed` and `checkout.session.async_payment_succeeded`. The API verifies the Stripe signature and payment amount before exposing download links. Purchases are tied to an HttpOnly browser cookie for 30 days. Admin sessions last eight hours in server memory and require a CSRF token for writes.
+
+The catalog is seeded from `catalog.seed.json` only when `store.json` does not exist. Product images are public. Uploaded sale files are private until payment is confirmed. Image uploads accept PNG/JPG/WebP up to 8 MB; sale files also accept PDF and allow up to 40 MB.
+
+For local development, start this backend on port 8080 and run `npm run dev` in the React app. Open `http://localhost:5173` and keep `APP_URL=http://localhost:5173`. Vite proxies `/api`, `/media` and legacy `/downloadPdf*` paths to Spring by default. The frontend proxy target can be changed with `KARNOR_BACKEND_URL`. Frontend preview uses the same port and proxy. Spring must be started separately in every case.
+
+For deployment, serve the React build as static files and route `/api/*` and `/media/*` to Spring from the same frontend origin before the SPA fallback. Route `/downloadPdf*` there as well if legacy PDF URLs are used. Vite proxy settings are only for local development/preview and are not included in the static build. API responses disable caching and Spring supplies the response security headers. Keep all server passwords, Stripe/Resend keys and storage configuration in this project.
+
+## Purchased files by email
+
+Create a Resend account and verify the sending domain with the DNS records Resend provides. Set `RESEND_API_KEY` and `MAIL_FROM` on the Kotlin server; for example, `MAIL_FROM=Karnor <material@your-domain.se>`. `MAIL_REPLY_TO` is optional and should point to your support mailbox. Keep the API key server-side. Set `APP_URL` to the public HTTPS frontend origin, restart the server and ensure `/api/email-downloads/*` reaches the Kotlin service. No additional libraries are required.
+
+The API exposes `emailDeliveryConfigured` as a boolean so the storefront promises email delivery only when configured. Stripe Checkout collects the customer's email address. A paid session created with email delivery enabled records a persistent delivery job alongside the order. Only confirmed paid orders are emailed. Existing orders created before activation are not automatically emailed.
+
+The delivery worker checks the persisted queue every 10 seconds and sends one order at a time through Resend. Material files totaling at most 15 MB are attached. Larger orders receive protected download links instead. Every delivery email also contains links that work across browsers for 30 days after payment. Possession of a private link grants access to that order's file; do not share the links or log their tokens.
+
+Failed transient requests are retried with exponential backoff, at most eight attempts. The same Resend idempotency key and attachment selection are reused. Automatic retries stop after 23 hours from the first attempt so that an uncertain send is not repeated after Resend's 24-hour idempotency window. Failed jobs remain in `store.json` for manual support via the Resend dashboard. A mail failure never hides paid downloads or reverses a successful payment. `sent` means Resend accepted the message; it does not prove inbox delivery. Check delivery/bounce events in Resend.
+
+Enable Stripe's receipt emails separately if customers should also receive a payment receipt. The material email is independent of Stripe receipts.
