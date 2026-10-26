@@ -30,6 +30,7 @@ class CmsStripe(
         val builder = HttpRequest.newBuilder(URI.create("https://api.stripe.com/v1/$path"))
             .timeout(java.time.Duration.ofSeconds(20))
             .header("Authorization", "Bearer $secretKey")
+            .header("Stripe-Version", "2026-09-30.endive")
         if (idempotencyKey != null) builder.header("Idempotency-Key", idempotencyKey)
         if (form == null) builder.GET() else {
             val encoded = form.entries.joinToString("&") { "${encode(it.key)}=${encode(it.value)}" }

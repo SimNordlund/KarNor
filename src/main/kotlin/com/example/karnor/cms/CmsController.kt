@@ -192,7 +192,7 @@ class CmsController(
                 }
                 val createdAt = System.currentTimeMillis()
                 val amount = items.sumOf { it.amount }
-                if (amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta belopp för betalning med Swish är $minimumCheckoutTotal kr.")
+                if (amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta köpbelopp är $minimumCheckoutTotal kr.")
                 Order(
                     id = UUID.randomUUID().toString(),
                     buyerHash = buyerHash,
@@ -200,18 +200,19 @@ class CmsController(
                     items = items,
                     amount = amount,
                     createdAt = createdAt,
-                    termsVersion = "2026-10-11",
+                    termsVersion = "2026-10-26",
                     digitalDeliveryConsentAt = createdAt,
                     emailDeliveryRequested = delivery.configured,
                 ).also { state.orders[it.id] = it }
             }
         }
-        if (order.amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta belopp för betalning med Swish är $minimumCheckoutTotal kr.")
+        if (order.amount < minimumCheckoutTotal * 100L) throw CmsError(400, "Minsta köpbelopp är $minimumCheckoutTotal kr.")
         if (order.checkoutUrl != null && (order.expiresAt ?: 0) > Instant.now().epochSecond) return mapOf("url" to order.checkoutUrl!!)
         if (order.checkoutUrl != null) throw CmsError(409, "Betalningssessionen har gått ut. Stäng varukorgen och försök igen.")
         val form = mutableMapOf(
             "mode" to "payment", "locale" to "sv",
-            "payment_method_types[0]" to "swish",
+            "allowed_payment_method_types[0]" to "card",
+            "allowed_payment_method_types[1]" to "swish",
             "success_url" to "$origin/butik/tack?session_id={CHECKOUT_SESSION_ID}",
             "cancel_url" to "$origin/butik?betalning=avbruten", "metadata[orderId]" to order.id,
         )
