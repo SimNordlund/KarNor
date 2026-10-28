@@ -8,11 +8,6 @@ import org.springframework.stereotype.Service
 @Service
 class PdfServiceImpl(val pdfRepo: PdfRepo) {
 
-    fun saveDownOnePdfToDb(pdfDto: PdfDTO): String {
-        pdfRepo.save(PdfConverter.pdfDtoToPdf(pdfDto))
-        return "PDF Sparad!"
-    }
-
     fun getPdfByIdFromDb(id: Long): PdfDTO {
         return PdfConverter.pdfToPdfDto(
             pdfRepo.findById(id).orElseThrow { RuntimeException("PDF not found with id: $id") })

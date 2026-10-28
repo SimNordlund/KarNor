@@ -1,12 +1,8 @@
 package com.example.karnor.controller
 
-import com.example.karnor.dto.PdfDTO
-import com.example.karnor.repository.PdfRepo
 import com.example.karnor.service.PdfServiceImpl
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
 import org.springframework.core.io.ByteArrayResource
@@ -25,12 +21,6 @@ class PdfController(val pdfServiceImpl: PdfServiceImpl) {
     @GetMapping("")
     fun test2(): String {
         return "Rest API:et fungerar v2!"
-    }
-
-    @PostMapping("/save")
-    fun savePdf(@RequestBody pdfDTO: PdfDTO): String {
-        pdfServiceImpl.saveDownOnePdfToDb(pdfDTO)
-        return "PDF:en sparades ner!"
     }
 
     @GetMapping(value = ["/api/resources/pdfs/{id}", "/downloadPdf/{id}"])

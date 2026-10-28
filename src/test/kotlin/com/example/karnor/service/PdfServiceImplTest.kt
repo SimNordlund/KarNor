@@ -1,13 +1,11 @@
 package com.example.karnor.service
 
-import com.example.karnor.dto.PdfDTO
 import com.example.karnor.model.Pdf
 import com.example.karnor.repository.PdfRepo
 import com.example.karnor.service.Converter.PdfConverter
 import org.junit.jupiter.api.Test
 
 import org.junit.jupiter.api.Assertions.*
-import org.mockito.ArgumentMatchers.any
 import org.mockito.Mock
 import org.springframework.boot.test.context.SpringBootTest
 import org.mockito.InjectMocks
@@ -22,18 +20,6 @@ class PdfServiceImplTest {
 
     @InjectMocks
     lateinit var pdfService: PdfServiceImpl
-
-    @Test
-    fun testSaveDownOnePdfToDb() {
-        val pdfDto = PdfDTO(1L, "testFileName", "testData".toByteArray())
-        val pdf = PdfConverter.pdfDtoToPdf(pdfDto)
-        `when`(pdfRepo.save(any(Pdf::class.java))).thenReturn(pdf)
-
-        val result = pdfService.saveDownOnePdfToDb(pdfDto)
-
-        verify(pdfRepo, times(1)).save(any(Pdf::class.java))
-        assertEquals("PDF Sparad!", result)
-    }
 
     @Test
     fun testGetPdfByIdFromDb() {

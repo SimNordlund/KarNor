@@ -2,11 +2,8 @@ package com.example.karnor.controller
 
 import com.example.karnor.dto.PdfDTO
 import com.example.karnor.service.PdfServiceImpl
-import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.`when`
-import org.mockito.kotlin.any
-import org.mockito.kotlin.verify
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
 import org.springframework.boot.test.mock.mockito.MockBean
@@ -25,27 +22,14 @@ class PdfControllerTest {
     @MockBean
     private lateinit var pdfServiceImpl: PdfServiceImpl
 
-    private val objectMapper = ObjectMapper()
-
     @Test
-    fun savePdf() {
-        val pdfDTO = PdfDTO(
-            id = null,
-            fileName = "test.pdf",
-            data = "Test Data".toByteArray()
-        )
-
-        val pdfJson = objectMapper.writeValueAsString(pdfDTO)
-
+    fun uploadEndpointIsRemoved() {
         mockMvc.perform(
             post("/save")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(pdfJson)
+                .content("""{"fileName":"test.pdf","data":"VGVzdA=="}""")
         )
-            .andExpect(status().isOk)
-            .andExpect(content().string("PDF:en sparades ner!"))
-
-        verify(pdfServiceImpl).saveDownOnePdfToDb(any())
+            .andExpect(status().is4xxClientError)
     }
 
     @Test

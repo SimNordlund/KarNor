@@ -1,13 +1,3 @@
-POST http://localhost:8080/save
-Content-Type: application/json
-
-{
-  "fileName": "DtoTest.pdf",
-  "data": "QUY5OEM3NUExRDA3MkJGPl0gL1ByZXYgMjczMzE2L1hSZWZTdG0gMjcwMTU0Pj4NCnN0YXJ0eHJlZg0KMjk5MzM5DQolJUVPRg=="
-}
-
-###
-
 GET http://localhost:8080/downloadPdf/1
 Accept: application/pdf
 
@@ -19,15 +9,6 @@ Accept: application/pdf
 ###
 
 GET http://localhost:8080/getSiteComment/3
-
-###
-POST http://localhost:8080/saveSiteComment
-Content-Type: application/json
-
-{
-  "comment": "First kommentar hehe kekw",
-  "author": "John Bejs"
-}
 
 ###
 GET http://localhost:8080/getAllSiteComments
